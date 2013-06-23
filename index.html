@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Simple Image Gallery</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=1024">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.3/jquery.backstretch.min.js"></script>
+		<script>
+			window.bg = '';
+			if (window.bg == '') {
+				$.getJSON('api.php', function(data) {
+					window.bg = data.cur;
+					background();
+				});
+			}
+			function changebg(direction){
+				$.getJSON('api.php?start=' + window.bg, function(data) {
+					if (direction == 'left'){
+						window.bg = data.prev;
+					} else {
+						window.bg = data.nxt;
+					}
+					background();
+				});
+
+			} 
+			function background(){
+				$.backstretch('images/'+window.bg);
+			}
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div style="width: 30%; height: 240px; float: left;" onclick="changebg('left');"></div>
+			<div style="width: 30%; height: 240px; float: right;" onclick="changebg('right');"></div>
+		</div>
+
+	</body>
+</html>
